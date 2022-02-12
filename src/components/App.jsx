@@ -1,55 +1,34 @@
-import React, { useRef, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import React, { useState } from 'react';
+import AddPetForm from './AddPetForm/index.jsx';
+import EmailConfirmationForm from './EmailConfirmationForm/index.jsx';
+import DeleteConfirmationForm from './DeleteConfirmationForm/index.jsx';
 
 function App() {
-    const fileInputref = useRef(null);
-    const { register, handleSubmit } = useForm()
-    const submitHandler = (data) => {
 
-        const fd = new FormData();
-        fd.append("picture", file,)
+    const [current, setCurrent] = useState("AddPet")
 
-        Object.entries(data).forEach(entry => {
-            fd.append(entry[0], entry[1])
-        })
+    let toRender = null;
 
-        const options = {
-            method: "POST",
-            body: fd
-        }
+    switch (current) {
+        case "AddPet":
+            toRender = <AddPetForm />;
+            break;
 
-        fetch('http://localhost:8081/posts', options).then(r => r.json()).then(console.log)
+        case "ConfirmDelete":
+            toRender = <DeleteConfirmationForm />
+            break;
 
+        case "ConfirmAdd":
+            toRender = <EmailConfirmationForm />
     }
-    const [file, setFile] = useState(null);
+
 
     return <div>
-        <form onSubmit={handleSubmit(submitHandler)} >
-            <div style={{
-                display: "flex",
-                flexDirection: "column",
-                width: "50%"
-            }}>
-
-                <input  {...register("animal")} type="text" placeholder='animal' />
-                <input {...register("breed")} type="text" placeholder='breed' />
-                <input {...register("gender")} type="text" placeholder='gender' />
-                <input {...register("neighborhood")} type="text" placeholder='neighborhood' />
-                <input {...register("email")} type="email" placeholder='email' />
-                <input {...register("phoneNumber")} type="text" placeholder='phoneNumber' />
-                <textarea {...register("description")} placeholder="description" cols="30" rows="10"></textarea>
-
-            </div>
-            <br />
-            <input
-                style={{ display: "none" }}
-                ref={fileInputref}
-                onChange={e => {
-                    setFile(e.target.files[0])
-                }} type="file" /> <br />
-            <button type='button' onClick={() => fileInputref.current?.click()} >Add file</button>
-            <button>submit</button>
-        </form>
+        <button onClick={() => setCurrent("AddPet")}>Add pet</button>
+        <button onClick={() => setCurrent("ConfirmDelete")}>delete post</button>
+        <button onClick={() => setCurrent("ConfirmAdd")}>Confirm post</button>
+        <hr />
+        {toRender}
     </div>;
 }
 
