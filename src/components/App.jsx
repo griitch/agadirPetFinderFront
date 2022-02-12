@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import AddPetForm from './AddPetForm/index.jsx';
-import EmailConfirmationForm from './EmailConfirmationForm/index.jsx';
-import DeleteConfirmationForm from './DeleteConfirmationForm/index.jsx';
+import AddPetForm from './AddPetForm.jsx';
+import EmailConfirmationForm from './EmailConfirmationForm.jsx';
+import DeleteConfirmationForm from './DeleteConfirmationForm.jsx';
 import "../styles/style.css"
 
 function App() {
@@ -25,7 +25,8 @@ function App() {
 
 
     return <div>
-        <button onClick={() => setCurrent("AddPet")}>Add pet</button>
+        <button
+            className='bg-violet-600 hover:bg-violet-700 px-4 py-2' onClick={() => setCurrent("AddPet")}>Add pet</button>
         <button onClick={() => setCurrent("ConfirmDelete")}>delete post</button>
         <button onClick={() => setCurrent("ConfirmAdd")}>Confirm post</button>
         <hr />
