@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import AddPetForm from './AddPetForm/index.jsx';
 import EmailConfirmationForm from './EmailConfirmationForm/index.jsx';
 import DeleteConfirmationForm from './DeleteConfirmationForm/index.jsx';
+import "../styles/style.css"
 
 function App() {
 
@@ -29,7 +30,7 @@ function App() {
         <button onClick={() => setCurrent("ConfirmAdd")}>Confirm post</button>
         <hr />
         {toRender}
-    </div>;
+    </div>
 }
 
 export default App;
