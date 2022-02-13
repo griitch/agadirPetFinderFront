@@ -22,7 +22,7 @@ function EmailConfirmationForm() {
                     }
                 }
 
-                fetch('http://localhost:8081/confirmation', options).then(r => r.json()).then(r => {
+                fetch('https://agadirpetfinder.herokuapp.com/confirmation', options).then(r => r.json()).then(r => {
                     if (r.message) {
                         alert(r.message)
                     } else {

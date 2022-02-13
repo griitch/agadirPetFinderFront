@@ -21,7 +21,7 @@ function DeleteConfirmationForm() {
                     }
                 }
 
-                fetch('http://localhost:8081/posts', options).then(r => r.json()).then(r => {
+                fetch('https://agadirpetfinder.herokuapp.com/posts', options).then(r => r.json()).then(r => {
                     if (r.message) {
                         alert(r.message)
                     } else if (r.deleted) {

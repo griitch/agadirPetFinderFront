@@ -24,7 +24,7 @@ function AddPetForm() {
             body: fd
         }
 
-        fetch('http://localhost:8081/posts', options)
+        fetch('https://agadirpetfinder.herokuapp.com/posts', options)
             .then(r => r.json())
             .then(res => {
                 if (!res.message) {

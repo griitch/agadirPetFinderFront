@@ -19,7 +19,7 @@ function PetsFilter({ goToNext, setOnboardingData, goToPrev }) {
                     }
                 }
                 const queryString = new URLSearchParams(dataWnoEmptyStrings).toString()
-                fetch('http://localhost:8081/posts?' + queryString, {
+                fetch('https://agadirpetfinder.herokuapp.com/posts?' + queryString, {
                     headers: {
                         Accept: "application/json",
                         "Content-Type": "application/json",
