@@ -7,7 +7,8 @@ import UploadSignSvg from './UploadSignSvg.jsx';
 function AddPetForm() {
     const fileInputref = useRef(null);
     const navigate = useNavigate()
-    const { register, handleSubmit } = useForm();
+    const { register, handleSubmit, watch } = useForm();
+    const [buttonDisabled, setButtonDisabled] = useState(false)
     const submitHandler = (data) => {
 
         const fd = new FormData();
@@ -24,6 +25,7 @@ function AddPetForm() {
             body: fd
         }
 
+        setButtonDisabled(true)
         fetch('https://agadirpetfinder.herokuapp.com/posts', options)
             .then(r => r.json())
             .then(res => {
@@ -32,7 +34,7 @@ function AddPetForm() {
                 } else {
                     alert("Veuillez entrer les données au bon format");
                 }
-            })
+            }).finally(() => setButtonDisabled(false))
     }
 
 
@@ -119,12 +121,19 @@ function AddPetForm() {
 
         <div className="row mt-3">
             <div className="col-sm-2 offset-sm-2">
-                <label className="form-label">Description :</label>
+                <label className="form-label">Description : <br />
+                    <span
+                        style={watch("description")?.length >= 250 ? { color: "red" } : { color: "inherit" }}
+                    >Caractères :
+                        {" "} {watch("description")?.length}
+                    </span>
+                </label>
             </div>
             <div className="col-sm-6">
                 <textarea className='form-control' {...register("description")}
                     placeholder
-                    ="Décrivez en détail l'apparence de l'animal, et mentionnez sa race si vous la reconaissez"
+                    ="Décrivez en détail l'apparence de l'animal,
+                     et mentionnez sa race si vous la reconaissez. Ne dépassez pas 250 caractères "
                     rows="4"></textarea>
             </div>
         </div>
@@ -148,6 +157,7 @@ function AddPetForm() {
 
         <div className="row">
             <button
+                disabled={buttonDisabled}
                 className="col-md-4 offset-md-4 btn btn-success text-white"
                 type='button' onClick={() => fileInputref.current?.click()} >
                 <UploadSignSvg height={30} width={30} fill="#fff" />
@@ -158,11 +168,14 @@ function AddPetForm() {
         </div>
         <div className="row">
 
-            <button className="col-md-4 offset-md-4 btn btn-primary text-white mt-3" >Valider</button>
+            <button
+                disabled={buttonDisabled}
+                className="col-md-4 offset-md-4 btn btn-primary text-white mt-3" >Valider</button>
 
         </div>
         <div className="row">
             <button
+                disabled={buttonDisabled}
                 type='button'
                 onClick={() => navigate("/")}
                 className='col-md-4 offset-md-4 btn btn-secondary text-white mt-3'>Retour</button>
