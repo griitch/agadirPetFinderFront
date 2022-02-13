@@ -1,36 +1,21 @@
-import React, { useState } from 'react';
+import React from 'react'
+import { HashRouter, Routes, Route } from 'react-router-dom'
 import AddPetForm from './AddPetForm.jsx';
 import EmailConfirmationForm from './EmailConfirmationForm.jsx';
 import DeleteConfirmationForm from './DeleteConfirmationForm.jsx';
+import Home from './Home.jsx'
 
 function App() {
-
-    const [current, setCurrent] = useState("AddPet")
-
-    let toRender = null;
-
-    switch (current) {
-        case "AddPet":
-            toRender = <AddPetForm />;
-            break;
-
-        case "ConfirmDelete":
-            toRender = <DeleteConfirmationForm />
-            break;
-
-        case "ConfirmAdd":
-            toRender = <EmailConfirmationForm />
-    }
-
-
-    return <div>
-        <button onClick={() => setCurrent("AddPet")}>Add pet</button>
-        <button onClick={() => setCurrent("ConfirmDelete")}>delete post</button>
-        <button onClick={() => setCurrent("ConfirmAdd")}>Confirm post</button>
-        <hr />
-        {toRender}
-    </div>;
+    return (
+        <HashRouter>
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/confirm" element={<EmailConfirmationForm />} />
+                <Route path="/delete" element={<DeleteConfirmationForm />} />
+                <Route path="/add" element={<AddPetForm />} />
+            </Routes>
+        </HashRouter>
+    )
 }
 
-export default App;
-
+export default App
