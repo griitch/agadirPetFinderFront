@@ -1,11 +1,8 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-//import { useNavigate } from 'react-router-dom'
 import { quartiers } from '../lib/quartiers';
 
 function PetsFilter({ goToNext, setOnboardingData, goToPrev }) {
-
-    //const navigate = useNavigate()
     const { register, handleSubmit } = useForm();
 
     return (
@@ -22,7 +19,6 @@ function PetsFilter({ goToNext, setOnboardingData, goToPrev }) {
                     }
                 }
                 const queryString = new URLSearchParams(dataWnoEmptyStrings).toString()
-                console.log(queryString)
                 fetch('http://localhost:8081/posts?' + queryString, {
                     headers: {
                         Accept: "application/json",
@@ -36,7 +32,7 @@ function PetsFilter({ goToNext, setOnboardingData, goToPrev }) {
                             setOnboardingData(res);
                             goToNext()
                         }
-                    }).catch(console.log)
+                    }).catch()
 
             })}>
 

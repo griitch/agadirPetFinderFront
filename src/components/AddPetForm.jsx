@@ -11,11 +11,12 @@ function AddPetForm() {
     const submitHandler = (data) => {
 
         const fd = new FormData();
-        fd.append("picture", file,)
+        fd.append("picture", file);
 
         Object.entries(data).forEach(entry => {
-            if (entry[1])
+            if (entry[1]) {
                 fd.append(entry[0], entry[1])
+            }
         })
 
         const options = {
@@ -27,21 +28,19 @@ function AddPetForm() {
             .then(r => r.json())
             .then(res => {
                 if (!res.message) {
-                    navigate("/confirm")
+                    navigate("/confirm");
                 } else {
-                    alert("Veuillez entrer les données au bon format")
+                    alert("Veuillez entrer les données au bon format");
                 }
             })
     }
 
 
     const handeFileUpload = (e) => {
-        console.log("first")
         if (e.target.files[0]) {
             setFile(e.target.files[0]);
             const fr = new FileReader();
             fr.onload = function () {
-                console.log(fr)
                 setImg(fr.result)
             }
             fr.readAsDataURL(e.target.files[0])

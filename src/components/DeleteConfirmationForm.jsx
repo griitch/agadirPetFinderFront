@@ -25,6 +25,7 @@ function DeleteConfirmationForm() {
                     if (r.message) {
                         alert(r.message)
                     } else if (r.deleted) {
+                        alert("Suppression réussie")
                         navigate("/")
                     }
                 })
