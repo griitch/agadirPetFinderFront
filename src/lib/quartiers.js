@@ -10,7 +10,6 @@ export const quartiers = [
   "Anouar Souss",
   "Anza",
   "Aourir",
-  "Autres",
   "Bensergao",
   "Charaf",
   "Cité Suisse",

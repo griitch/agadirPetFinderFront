@@ -1,10 +1,12 @@
 import React, { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom'
 import { quartiers } from '../lib/quartiers';
 import UploadSignSvg from './UploadSignSvg.jsx';
 
 function AddPetForm() {
     const fileInputref = useRef(null);
+    const navigate = useNavigate()
     const { register, handleSubmit } = useForm();
     const submitHandler = (data) => {
 
@@ -12,7 +14,8 @@ function AddPetForm() {
         fd.append("picture", file,)
 
         Object.entries(data).forEach(entry => {
-            fd.append(entry[0], entry[1])
+            if (entry[1])
+                fd.append(entry[0], entry[1])
         })
 
         const options = {
@@ -20,7 +23,15 @@ function AddPetForm() {
             body: fd
         }
 
-        fetch('http://localhost:8081/posts', options).then(r => r.json()).then(console.log)
+        fetch('http://localhost:8081/posts', options)
+            .then(r => r.json())
+            .then(res => {
+                if (!res.message) {
+                    navigate("/confirm")
+                } else {
+                    alert("Veuillez entrer les données au bon format")
+                }
+            })
     }
 
 
@@ -124,11 +135,6 @@ function AddPetForm() {
         <input
             style={{ display: "none" }}
             ref={fileInputref}
-            // onChange={e => {
-            //     e.target.files[0] &&
-            //         setFile(e.target.files[0])
-            // }} 
-
             onChange={handeFileUpload}
             type="file" /> <br />
         {img &&
@@ -155,6 +161,12 @@ function AddPetForm() {
 
             <button className="col-md-4 offset-md-4 btn btn-primary text-white mt-3" >Valider</button>
 
+        </div>
+        <div className="row">
+            <button
+                type='button'
+                onClick={() => navigate("/")}
+                className='col-md-4 offset-md-4 btn btn-secondary text-white mt-3'>Retour</button>
         </div>
 
     </form >

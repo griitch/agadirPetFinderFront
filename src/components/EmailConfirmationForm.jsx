@@ -25,8 +25,9 @@ function EmailConfirmationForm() {
                 fetch('http://localhost:8081/confirmation', options).then(r => r.json()).then(r => {
                     if (r.message) {
                         alert(r.message)
-                    } else if (r.deleted) {
-                        navigate("/")
+                    } else {
+                        alert("Annonce confirmée")
+                        navigate(`/`)
                     }
                 })
             })} >
@@ -36,6 +37,7 @@ function EmailConfirmationForm() {
 
             <button className='btn btn-primary btn-lg px-5 text-white'>Valider</button>
             <button
+                type='button'
                 onClick={() => navigate("/")}
                 className='btn btn-secondary mt-3 btn-lg px-5 text-white'>Retour</button>
         </form>

@@ -35,6 +35,7 @@ function DeleteConfirmationForm() {
 
             <button className='btn btn-primary btn-lg px-5 text-white'>Valider</button>
             <button
+                type='button'
                 onClick={() => navigate("/")}
                 className='btn btn-secondary mt-3 btn-lg px-5 text-white'>Retour</button>
         </form>
