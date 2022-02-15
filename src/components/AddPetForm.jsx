@@ -3,12 +3,15 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom'
 import { quartiers } from '../lib/quartiers';
 import UploadSignSvg from './UploadSignSvg.jsx';
+import FormError from './FormError.jsx';
 
 function AddPetForm() {
     const fileInputref = useRef(null);
     const navigate = useNavigate()
-    const { register, handleSubmit, watch } = useForm();
-    const [buttonDisabled, setButtonDisabled] = useState(false)
+    const { register, handleSubmit, watch, formState: { errors } } = useForm();
+    const [buttonDisabled, setButtonDisabled] = useState(false);
+    const [img, setImg] = useState(null)
+    const [file, setFile] = useState(null);
     const submitHandler = (data) => {
 
         const fd = new FormData();
@@ -31,8 +34,6 @@ function AddPetForm() {
             .then(res => {
                 if (!res.message) {
                     navigate("/confirm");
-                } else {
-                    alert("Veuillez entrer les données au bon format");
                 }
             }).finally(() => setButtonDisabled(false))
     }
@@ -48,9 +49,6 @@ function AddPetForm() {
             fr.readAsDataURL(e.target.files[0])
         }
     }
-
-    const [img, setImg] = useState(null)
-    const [file, setFile] = useState(null);
 
 
 
@@ -100,32 +98,34 @@ function AddPetForm() {
             </div>
         </div>
 
+        <div className="row mt-3">
+            <div className="col-sm-2 offset-sm-2">
+                <label className="form-label">Email* :</label>
+            </div>
+            <div className="col-sm-6">
+                <input className="form-control" {...register("email", { required: true, type: "email" })} placeholder='abc@def.ijk' />
+            </div>
+        </div>
+        {errors.email && <FormError message={"veuillez entrer un email valide"} />}
 
         <div className="row mt-3">
             <div className="col-sm-2 offset-sm-2">
-                <label className="form-label">Email :</label>
+                <label className="form-label">Numéro de télephone* :</label>
             </div>
             <div className="col-sm-6">
-                <input className="form-control" {...register("email")} type="email" placeholder='abc@def.ijk' />
+                <input className="form-control" {...register("phoneNumber", { required: true, pattern: '0[67][0-9]{8}' })} type="text" placeholder='0612345678' />
             </div>
         </div>
-
-        <div className="row mt-3">
-            <div className="col-sm-2 offset-sm-2">
-                <label className="form-label">Numéro de télephone  :</label>
-            </div>
-            <div className="col-sm-6">
-                <input className="form-control" {...register("phoneNumber")} type="text" pattern='0[67][0-9]{8}' placeholder='0612345678' />
-            </div>
-        </div>
+        {errors.email && <FormError message={"veuillez entrer un numéro de télephone valide"} />}
 
         <div className="row mt-3">
             <div className="col-sm-2 offset-sm-2">
                 <label className="form-label">Description : <br />
                     <span
                         style={watch("description")?.length >= 250 ? { color: "red" } : { color: "inherit" }}
-                    >Caractères :
-                        {" "} {watch("description")?.length}
+                    ><b>Nombre de caractères :
+                            {" "} {watch("description")?.length || 0}
+                        </b>
                     </span>
                 </label>
             </div>
@@ -149,12 +149,10 @@ function AddPetForm() {
             <div className="row">
                 <img
                     src={img}
-                    className="col-sm-4 offset-sm-5 my-3"
-                    style={{ maxHeight: "300px", maxWidth: "100%" }} />
-
+                    className="col-md-4 offset-sm-4 my-3"
+                    style={{ maxHeight: "400px", maxWidth: "550px" }} />
             </div>
         }
-
         <div className="row">
             <button
                 disabled={buttonDisabled || (watch("description")?.length >= 250)}
