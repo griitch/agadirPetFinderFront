@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { quartiers } from '../lib/quartiers';
 
 function PetsFilter({ goToNext, setOnboardingData, goToPrev }) {
     const { register, handleSubmit } = useForm();
+    const [buttonDisabled, setButtonDisabled] = useState(false);
 
     return (
         <form className='container-fluid my-5'
@@ -13,13 +14,14 @@ function PetsFilter({ goToNext, setOnboardingData, goToPrev }) {
             }}
             onSubmit={handleSubmit(data => {
                 const dataWnoEmptyStrings = {};
+                setButtonDisabled(true)
                 for (let key in data) {
                     if (data[key]) {
                         dataWnoEmptyStrings[key] = data[key]
                     }
                 }
                 const queryString = new URLSearchParams(dataWnoEmptyStrings).toString()
-                fetch('http://localhost:8081/posts?' + queryString, {
+                fetch('https://agadirpetfinder.herokuapp.com/posts?' + queryString, {
                     headers: {
                         Accept: "application/json",
                         "Content-Type": "application/json",
@@ -32,7 +34,7 @@ function PetsFilter({ goToNext, setOnboardingData, goToPrev }) {
                             setOnboardingData(res);
                             goToNext()
                         }
-                    }).catch()
+                    }).finally(() => setButtonDisabled(true))
 
             })}>
 
@@ -76,11 +78,15 @@ function PetsFilter({ goToNext, setOnboardingData, goToPrev }) {
                 </div>
             </div>
             <div className="row">
-                <button className="col-md-4 offset-md-4 btn btn-primary text-white mt-4" >Valider</button>
+
+                <button
+                    disabled={buttonDisabled}
+                    className="col-md-4 offset-md-4 btn btn-primary text-white mt-4" >Valider</button>
             </div>
 
             <div className="row">
                 <button
+                    disabled={buttonDisabled}
                     type='button'
                     onClick={goToPrev}
                     className='col-md-4 offset-md-4 btn btn-secondary text-white mt-3'>Précédent</button>

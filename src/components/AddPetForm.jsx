@@ -3,11 +3,15 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom'
 import { quartiers } from '../lib/quartiers';
 import UploadSignSvg from './UploadSignSvg.jsx';
+import FormError from './FormError.jsx';
 
 function AddPetForm() {
     const fileInputref = useRef(null);
     const navigate = useNavigate()
-    const { register, handleSubmit } = useForm();
+    const { register, handleSubmit, watch, formState: { errors } } = useForm();
+    const [buttonDisabled, setButtonDisabled] = useState(false);
+    const [img, setImg] = useState(null)
+    const [file, setFile] = useState(null);
     const submitHandler = (data) => {
 
         const fd = new FormData();
@@ -24,15 +28,14 @@ function AddPetForm() {
             body: fd
         }
 
-        fetch('http://localhost:8081/posts', options)
+        setButtonDisabled(true)
+        fetch('https://agadirpetfinder.herokuapp.com/posts', options)
             .then(r => r.json())
             .then(res => {
                 if (!res.message) {
                     navigate("/confirm");
-                } else {
-                    alert("Veuillez entrer les données au bon format");
                 }
-            })
+            }).finally(() => setButtonDisabled(false))
     }
 
 
@@ -46,9 +49,6 @@ function AddPetForm() {
             fr.readAsDataURL(e.target.files[0])
         }
     }
-
-    const [img, setImg] = useState(null)
-    const [file, setFile] = useState(null);
 
 
 
@@ -98,33 +98,42 @@ function AddPetForm() {
             </div>
         </div>
 
-
         <div className="row mt-3">
             <div className="col-sm-2 offset-sm-2">
-                <label className="form-label">Email :</label>
+                <label className="form-label">Email* :</label>
             </div>
             <div className="col-sm-6">
-                <input className="form-control" {...register("email")} type="email" placeholder='abc@def.ijk' />
+                <input className="form-control" {...register("email", { required: true, type: "email" })} placeholder='abc@def.ijk' />
             </div>
         </div>
+        {errors.email && <FormError message={"veuillez entrer un email valide"} />}
 
         <div className="row mt-3">
             <div className="col-sm-2 offset-sm-2">
-                <label className="form-label">Numéro de télephone  :</label>
+                <label className="form-label">Numéro de télephone* :</label>
             </div>
             <div className="col-sm-6">
-                <input className="form-control" {...register("phoneNumber")} type="text" pattern='0[67][0-9]{8}' placeholder='0612345678' />
+                <input className="form-control" {...register("phoneNumber", { required: true, pattern: '0[67][0-9]{8}' })} type="text" placeholder='0612345678' />
             </div>
         </div>
+        {errors.email && <FormError message={"veuillez entrer un numéro de télephone valide"} />}
 
         <div className="row mt-3">
             <div className="col-sm-2 offset-sm-2">
-                <label className="form-label">Description :</label>
+                <label className="form-label">Description : <br />
+                    <span
+                        style={watch("description")?.length >= 250 ? { color: "red" } : { color: "inherit" }}
+                    ><b>Nombre de caractères :
+                            {" "} {watch("description")?.length || 0}
+                        </b>
+                    </span>
+                </label>
             </div>
             <div className="col-sm-6">
                 <textarea className='form-control' {...register("description")}
                     placeholder
-                    ="Décrivez en détail l'apparence de l'animal, et mentionnez sa race si vous la reconaissez"
+                    ="Décrivez en détail l'apparence de l'animal,
+                     et mentionnez sa race si vous la reconaissez. Ne dépassez pas 250 caractères "
                     rows="4"></textarea>
             </div>
         </div>
@@ -140,14 +149,13 @@ function AddPetForm() {
             <div className="row">
                 <img
                     src={img}
-                    className="col-sm-4 offset-sm-5 my-3"
-                    style={{ maxHeight: "300px", maxWidth: "100%" }} />
-
+                    className="col-md-4 offset-sm-4 my-3"
+                    style={{ maxHeight: "400px", maxWidth: "550px" }} />
             </div>
         }
-
         <div className="row">
             <button
+                disabled={buttonDisabled || (watch("description")?.length >= 250)}
                 className="col-md-4 offset-md-4 btn btn-success text-white"
                 type='button' onClick={() => fileInputref.current?.click()} >
                 <UploadSignSvg height={30} width={30} fill="#fff" />
@@ -158,11 +166,14 @@ function AddPetForm() {
         </div>
         <div className="row">
 
-            <button className="col-md-4 offset-md-4 btn btn-primary text-white mt-3" >Valider</button>
+            <button
+                disabled={buttonDisabled || (watch("description")?.length >= 250)}
+                className="col-md-4 offset-md-4 btn btn-primary text-white mt-3" >Valider</button>
 
         </div>
         <div className="row">
             <button
+                disabled={buttonDisabled || (watch("description")?.length >= 250)}
                 type='button'
                 onClick={() => navigate("/")}
                 className='col-md-4 offset-md-4 btn btn-secondary text-white mt-3'>Retour</button>
