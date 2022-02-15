@@ -157,7 +157,7 @@ function AddPetForm() {
 
         <div className="row">
             <button
-                disabled={buttonDisabled}
+                disabled={buttonDisabled || (watch("description")?.length >= 250)}
                 className="col-md-4 offset-md-4 btn btn-success text-white"
                 type='button' onClick={() => fileInputref.current?.click()} >
                 <UploadSignSvg height={30} width={30} fill="#fff" />
@@ -169,13 +169,13 @@ function AddPetForm() {
         <div className="row">
 
             <button
-                disabled={buttonDisabled}
+                disabled={buttonDisabled || (watch("description")?.length >= 250)}
                 className="col-md-4 offset-md-4 btn btn-primary text-white mt-3" >Valider</button>
 
         </div>
         <div className="row">
             <button
-                disabled={buttonDisabled}
+                disabled={buttonDisabled || (watch("description")?.length >= 250)}
                 type='button'
                 onClick={() => navigate("/")}
                 className='col-md-4 offset-md-4 btn btn-secondary text-white mt-3'>Retour</button>
