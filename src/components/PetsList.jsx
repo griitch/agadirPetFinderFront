@@ -5,7 +5,7 @@ function PetsList({ onboardingData, goToPrev }) {
     return (
         <div className='container mt-5'>
 
-            <h2 className="text-primary row fw-bold my-3">Résultats de la recherche</h2>
+            <h2 className="text-primary text-center fw-bold my-4">Résultats de la recherche</h2>
 
             <div className="row">
                 <button
@@ -14,10 +14,9 @@ function PetsList({ onboardingData, goToPrev }) {
             </div>
 
             <div className="row">
-
                 {
                     onboardingData.map(pet => (
-                        <div className='card col-md-5 m-4' key={pet._id}>
+                        <div className='card col-md-4 my-3' key={pet._id}>
                             <img className='img-fluid' src={pet.picUrl} />
                             <div className="card-body">
                                 <h6 className="card-title">Quartier : <span className='fw-bold'>{pet.neighborhood}</span></h6>
