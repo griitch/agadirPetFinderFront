@@ -34,7 +34,7 @@ function PetsFilter({ goToNext, setOnboardingData, goToPrev }) {
                             setOnboardingData(res);
                             goToNext()
                         }
-                    }).finally(() => setButtonDisabled(true))
+                    }).finally(() => setButtonDisabled(false))
 
             })}>
 
